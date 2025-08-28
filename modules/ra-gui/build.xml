@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ra-gui" default="build">
+    <description>
+            Build file for the Registration Authority GUI
+    </description>
+
+	<dirname property="ra-gui.dir" file="${ant.file.ra-gui}"/>
+
+    <import file="${ra-gui.dir}/../build-helpers.xml"/>
+	
+	<property name="ra-gui.build.dir" location="${ra-gui.dir}/build"/>
+	<property name="ra-gui.src.dir" location="${ra-gui.dir}/src"/>
+	<property name="ra-gui.resources.dir" location="${ra-gui.dir}/resources"/>
+	<property name="ra-gui.js.dir" location="${ra-gui.resources.dir}/js"/>
+	<property name="ra-gui.src-test.dir" location="${ra-gui.dir}/src-test"/>
+	<property name="ra-gui.build-test.dir" location="${ra-gui.dir}/build-test"/>
+
+	<path id="compile.classpath">
+		<path refid="lib.ejbca-common-web.classpath"/>
+		<path location="${mod.ejbca-ejb.lib}"/>
+		<path location="${mod.cesecore-ejb.lib}"/>
+		<path location="${mod.cesecore-entity.lib}"/>
+		<path refid="lib.bouncycastle.classpath"/>
+		<path refid="lib.log4j.classpath"/>
+		<path refid="lib.servlet.classpath"/>
+		<path refid="lib.jsf.classpath"/>
+		<path refid="lib.commons-lang.classpath"/>
+		<path refid="lib.commons-config.classpath"/>
+		<path refid="lib.commons-collections4.classpath"/>
+		<path refid="lib.commons-io.classpath"/>
+		<path refid="lib.commons-codec.classpath"/>
+		<path refid="lib.jee.classpath"/>
+		<path refid="lib.ldap.classpath"/>
+	    <path refid="lib.snakeyaml.classpath"/>
+		<path refid="lib.cryptotokens.classpath" />
+	</path>
+
+	<path id="test.classpath">
+		<path refid="compile.classpath"/>
+		<path location="${ra-gui.build-test.dir}" />
+		<path location="${ra-gui.build.dir}/WEB-INF/classes" />
+		<path refid="lib.junit.classpath"/>
+		<path refid="lib.easymock.classpath"/>
+		<path refid="lib.commons-logging.classpath"/>
+	</path>
+	
+    <target name="clean" description="Clean up this module">
+		<delete dir="${ra-gui.build.dir}" />
+    	<delete file="${mod.ra-gui.war}" />
+    </target>
+	
+    <target name="build" description="Build the RA WAR" depends="compile">
+        <war destfile="${mod.ra-gui.war}" webxml="${ra-gui.resources.dir}/WEB-INF/web.xml" basedir="${ra-gui.build.dir}" excludes="WEB-INF/web.xml">
+        	<fileset dir="${ra-gui.resources.dir}"/>
+        </war>
+    </target>
+
+    <target name="compile" depends="">
+    	<mkdir dir="${ra-gui.build.dir}/WEB-INF/classes"/>
+        <javac srcdir="${ra-gui.src.dir}" destdir="${ra-gui.build.dir}/WEB-INF/classes" debug="on" includeantruntime="no" encoding="UTF-8" target="${java.target.version}"
+        	classpathref="compile.classpath"/>
+		<copy file="${jquery.file}" todir="${ra-gui.js.dir}" failonerror="false"/>
+	</target>
+
+	<target name="compile-tests" depends="build">
+		<mkdir dir="${ra-gui.build-test.dir}" />
+		<javac srcdir="${ra-gui.src-test.dir}" destdir="${ra-gui.build-test.dir}" debug="on" includeantruntime="no"
+			   encoding="UTF-8" target="${java.target.version}" classpathref="test.classpath"/>
+		<copy file="${log4j.test.file}" tofile="${ra-gui.build-test.dir}/log4j.xml" failonerror="true"/>
+	</target>
+
+	<target name="test:unit" depends="compile-tests">
+		<junit printsummary="yes" haltonfailure="no" showoutput="${test.showoutput}">
+			<classpath>
+				<path refid="test.classpath"/>
+			</classpath>
+			<formatter type="xml" />
+			<batchtest fork="yes" todir="${reports.dir}">
+				<fileset dir="${ra-gui.build-test.dir}">
+					<include name="**/*UnitTest.class" />
+				</fileset>
+			</batchtest>
+			<jvmarg line="${tests.jvmargs}"/>
+		</junit>
+	</target>
+
+	<target name="runone" depends="compile-tests">
+		<fail message="'test.runone' is not set. Example -Dtest.runone=UnidFnrTest . You can also use -Dtest.showoutput=true to send test output to console." unless="test.runone" />
+		<condition property="remoteDebugJvmArgs"
+				   value="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=8787"
+				   else="-ea">
+			<istrue value="${remoteDebug}"/>
+		</condition>
+		<junit printsummary="yes" haltonfailure="no" showoutput="${test.showoutput}">
+			<classpath>
+				<path refid="test.classpath"/>
+			</classpath>
+			<formatter type="xml" />
+			<batchtest fork="yes" todir="${reports.dir}">
+				<fileset dir="${ra-gui.build-test.dir}">
+					<include name="**/${test.runone}.class" />
+				</fileset>
+			</batchtest>
+			<jvmarg line="${tests.jvmargs}"/>
+			<jvmarg value="${remoteDebugJvmArgs}"/>
+		</junit>
+	</target>
+	
+</project>

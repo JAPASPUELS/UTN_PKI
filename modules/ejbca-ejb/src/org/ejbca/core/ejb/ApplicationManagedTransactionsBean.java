@@ -1,0 +1,90 @@
+/*************************************************************************
+ *                                                                       *
+ *  EJBCA: The OpenSource Certificate Authority                          *
+ *                                                                       *
+ *  This software is free software; you can redistribute it and/or       *
+ *  modify it under the terms of the GNU Lesser General Public           *
+ *  License as published by the Free Software Foundation; either         *
+ *  version 2.1 of the License, or any later version.                    *
+ *                                                                       *
+ *  See terms of license at gnu.org.                                     *
+ *                                                                       *
+ *************************************************************************/
+package org.ejbca.core.ejb;
+
+import jakarta.annotation.Resource;
+import jakarta.ejb.Stateless;
+import jakarta.ejb.TransactionManagement;
+import jakarta.ejb.TransactionManagementType;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.OptimisticLockException;
+import jakarta.persistence.PersistenceUnit;
+import jakarta.transaction.HeuristicMixedException;
+import jakarta.transaction.HeuristicRollbackException;
+import jakarta.transaction.NotSupportedException;
+import jakarta.transaction.RollbackException;
+import jakarta.transaction.SystemException;
+import jakarta.transaction.UserTransaction;
+
+import org.apache.log4j.Logger;
+import org.cesecore.util.LogRedactionUtils;
+import org.ejbca.core.ejb.ra.UserData;
+
+/**
+ * Methods for performing database operations without involving the application server.
+ * <p>
+ * This is necessary to suppress errors in insertions/updates that are prone to fail, but where failure is not a problem.
+ * I.e. "best-effort" mode.
+ */
+@Stateless
+@TransactionManagement(TransactionManagementType.BEAN)
+public class ApplicationManagedTransactionsBean {
+
+    private static final Logger log = Logger.getLogger(ApplicationManagedTransactionsBean.class);
+
+    @PersistenceUnit
+    private EntityManagerFactory entityManagerFactory;
+
+    @Resource
+    private UserTransaction userTransaction;
+
+    /**
+     * Edits/adds an end entity in a separate transaction, and ignores any transaction conflicts.
+     * <p>
+     * Note: This will not be rolled back if the outer transaction gets rolled back.
+     *
+     * @param newUserData User data.
+     * @param isNew Whether the end entity should be inserted (true) or updated (false).
+     */
+    public void changeUserIfNoConflict(final UserData newUserData, final boolean isNew) {
+        final EntityManager em = entityManagerFactory.createEntityManager();
+        try {
+            userTransaction.begin();
+            if (isNew) {
+                em.persist(newUserData);
+            } else {
+                em.merge(newUserData);
+            }
+            userTransaction.commit();
+        } catch (RollbackException | HeuristicRollbackException | HeuristicMixedException | OptimisticLockException e) {
+            if (log.isTraceEnabled()) {
+                log.trace("Caught rollback exception: " + LogRedactionUtils.getRedactedMessage(e.getMessage()),
+                        LogRedactionUtils.getRedactedException(e));
+            }
+            log.info("Skipped update of '" + newUserData.getUsername() + "' due to concurrent transaction.");
+            try {
+                userTransaction.rollback();
+            } catch (IllegalStateException | SecurityException | SystemException rollbackException) {
+                log.warn("An exception happened during transaction rollback: " + rollbackException.getClass() + ": "
+                        + LogRedactionUtils.getRedactedMessage(rollbackException.getMessage()));
+                log.debug("Rollback exception stacktrace: ", rollbackException);
+            }
+        } catch (SecurityException | SystemException | NotSupportedException e) {
+            throw new IllegalStateException(LogRedactionUtils.getRedactedException(e));
+        } finally {
+            em.close();
+        }
+    }
+    
+}

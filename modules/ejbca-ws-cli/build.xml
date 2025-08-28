@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ejbca-ws-cli" default="build">
+    <description>
+		The EJBCA Web Services Command Line Interface
+    </description>
+
+	<dirname property="ejbca-ws-cli.dir" file="${ant.file.ejbca-ws-cli}"/>
+
+    <import file="${ejbca-ws-cli.dir}/../build-helpers.xml"/>
+	<import file="${ejbca-ws-cli.dir}/../systemtests/build.xml"/>
+	
+	<property name="ejbca-ws-cli.build.dir" location="${ejbca-ws-cli.dir}/build"/>
+	<property name="ejbca-ws-cli.build-test.dir" location="${ejbca-ws-cli.dir}/build-test"/>
+	<property name="ejbca-ws-cli.src.dir" location="${ejbca-ws-cli.dir}/src"/>
+	<property name="ejbca-ws-cli.src-test.dir" location="${ejbca-ws-cli.dir}/src-test"/>
+	
+	<property name="ejbca-ws-cli.resources.dir" location="${ejbca-ws-cli.dir}/resources"/>
+	
+	<property name ="ejbca-ws-cli.tmp" location="${ejbca-ws-cli.dir}/temp/" />
+	<property name ="ejbca-ws-cli.tmp.src" location="${ejbca-ws-cli.tmp}/src" />
+	<property name ="ejbca-ws-cli.tmp.build" location="${ejbca-ws-cli.tmp}/build" />
+
+	<path id="compile.classpath">
+		<path refid="lib.jee.classpath"/>
+		<path refid="lib.ejbca-common.classpath"/>
+		<path refid="lib.cert-cvc.classpath"/>
+		<path refid="lib.bouncycastle.classpath"/>
+		<path refid="lib.log4j.classpath"/>
+		<path refid="lib.commons-lang.classpath"/>
+		<path refid="lib.commons-config.classpath"/>
+		<path refid="lib.commons-logging.classpath"/>
+		<path refid="lib.commons-beanutils.classpath"/>
+		<path refid="lib.commons-text.classpath"/>
+		<path refid="lib.commons-collections4.classpath"/>
+		<path refid="soapclient.classpath" />
+		<path refid="lib.jakarta.xml.ws-api.classpath"/>
+		<path refid="lib.jakarta.jws-api.classpath"/>
+		<path location="${mod.cesecore-entity.lib}"/>
+		<path location="${mod.cesecore-ejb-interface.lib}"/>
+		<path location="${mod.ejbca-ws.lib}"/>
+		<path refid="lib.cryptotokens.classpath"/>
+	</path>
+
+	<path id="test.classpath">
+		<path refid="compile.classpath"/>
+		<path refid="systemtests.classpath.nojee"/>
+		<path refid="common.classpath"/>
+		<path location="${ejbca-ws-cli.build.dir}/classes"/>
+		<path location="${ejbca-ws-cli.build-test.dir}"/>
+		<path location="${ejbca-ws-cli.build.dir}/conf"/>
+		<path location="${ejbca-ws-cli.resources.dir}"/>
+	</path>
+	
+	<path id="compile-withws.classpath">
+		<path refid="compile.classpath"/>
+		<!-- Library containing the server side generated files -->
+		<path location="${mod.ejbca-ws-client-gen.lib}" />
+	</path>
+
+    <target name="build" description="Build this module" depends="compile, setup">
+    	<pathconvert property="ejbca-ws-cli.dependencies" pathsep=" ">
+    	    <path>
+	        	<fileset dir="${mod.ejbca-ws-cli.dist}" includes="lib/*.jar"/>
+    	    </path>
+    		<map from="${mod.ejbca-ws-cli.dist}/" to=""/>
+    	</pathconvert>
+    	<jar destfile="${mod.ejbca-ws-cli.lib}">
+            <manifest>
+                <attribute name="Implementation-Version" value="${app.version}"/>
+    			<attribute name="Class-path" value="${ejbca-ws-cli.dependencies} ./" />
+				<attribute name="Main-Class" value="org.ejbca.core.protocol.ws.client.ejbcawsracli"/>
+            </manifest>
+        	<fileset dir="${ejbca-ws-cli.build.dir}" includes="**"/>
+    	</jar>
+        <!-- Also make a jar file with no Class-path inside it, this is used when including the client lib in an ear file
+             where the class path is set by the container -->
+    	
+    	<jar destfile="${mod.ejbca-ws-client.lib}">
+            <manifest>
+                <attribute name="Implementation-Version" value="${app.version}"/>
+            </manifest>
+        	<fileset dir="${ejbca-ws-cli.build.dir}" includes="**"/>
+    	</jar>
+    	
+    </target>
+
+	<target name="compile-tests" depends="build">
+    	<mkdir dir="${ejbca-ws-cli.build-test.dir}"/>
+		<javac srcdir="${ejbca-ws-cli.src-test.dir}" destdir="${ejbca-ws-cli.build-test.dir}" debug="on" includeantruntime="no"
+        	encoding="UTF-8" classpathref="test.classpath"/>
+    </target>
+	
+	<target name="test:unit" depends="compile-tests" description="Run unit tests for this module">
+		<junit printsummary="yes" haltonfailure="no" showoutput="${test.showoutput}" dir="${ejbca-ws-cli.dir}">
+			<classpath>
+        		<path refid="test.classpath"/>
+			</classpath>
+			<formatter type="xml" />
+			<batchtest fork="yes" todir="${reports.dir}">
+                <fileset dir="${ejbca-ws-cli.build-test.dir}" includes="**/*UnitTest.class"/>
+            </batchtest>
+			<jvmarg line="${tests.jvmargs}"/>
+		</junit>
+    </target>
+	
+	<target name="runone" depends="compile-tests">
+		<fail message="'test.runone' is not set. Example -Dtest.runone=RevokeCertWithMetadataCommandUnitTest . You can also use -Dtest.showoutput=true to send test output to console." unless="test.runone" />
+		<junit printsummary="yes" haltonfailure="no" showoutput="${test.showoutput}">
+			<classpath>
+        		<path refid="test.classpath"/>
+			</classpath>
+			<formatter type="xml" />
+			<batchtest fork="yes" todir="${reports.dir}">
+				<fileset dir="${ejbca-ws-cli.build-test.dir}">
+					<include name="**/${test.runone}.class" />
+				</fileset>
+			</batchtest>
+			<jvmarg line="${tests.jvmargs}"/>
+		</junit>
+	</target>
+	
+    <target name="clean" description="Clean up this module">
+		<delete dir="${ejbca-ws-cli.build.dir}" />
+		<delete dir="${mod.ejbca-ws-cli.dist}" />
+		<delete file="${mod.ejbca-ws.wsdl}" />
+		<delete dir="${ejbca-ws-cli.build-test.dir}"/>
+    </target>
+	
+    <target name="compile" depends="">
+    	<mkdir dir="${ejbca-ws-cli.build.dir}" />
+        <javac destdir="${ejbca-ws-cli.build.dir}" debug="on" includeantruntime="no"
+        	encoding="UTF-8" target="${java.target.version}" classpathref="compile-withws.classpath">
+        	<src path="${ejbca-ws-cli.src.dir}"/>
+    	</javac>
+    </target>
+	
+
+
+	<!-- Generate the client side library, both for internal use and to distribute -->
+    <target name="generate" description="Generate WS client stubs from implementation">
+		<available file="${mod.ejbca-ws.wsdl}" property="wsdl.present"/>
+		<fail unless="wsdl.present" message="Generation of client side Web Services code requires ${mod.ejbca-ws.wsdl} to be present."/>
+		<mkdir dir="${ejbca-ws-cli.build.dir}" />
+    	
+    	<taskdef name="wsimport" classname="com.sun.tools.ws.ant.WsImport" classpathref="wsgen.classpath"/>
+     	<wsimport 
+    		wsdl="${mod.ejbca-ws.wsdl}"
+    		sourcedestdir="${mod.ejbca-ws-gen.dir}"
+    		destdir="${ejbca-ws-cli.build.dir}"
+    		package="org.ejbca.core.protocol.ws.client.gen"
+    		keep="true"
+    		verbose="true">  	
+    	</wsimport>
+    	
+    	<!-- Move some of the files directly from the ejbca-ws module, because we historically do some things outside of wsgen -->
+    	<mkdir dir="${ejbca-ws-cli.tmp}" />
+    	<mkdir dir="${ejbca-ws-cli.tmp.src}" />
+    	<mkdir dir="${ejbca-ws-cli.tmp.build}" />
+    	
+    	<antcall target="overwritegenerated" inheritall="true" inheritrefs="true">
+           <param name="class" value="Certificate"/>
+    	</antcall>
+        <antcall target="overwritegenerated" inheritall="true" inheritrefs="true">
+           <param name="class" value="CertificateResponse"/>
+    	</antcall>
+    	<antcall target="overwritegenerated" inheritall="true" inheritrefs="true">
+           <param name="class" value="ExtendedInformationWS"/>
+    	</antcall>
+    	<antcall target="overwritegenerated" inheritall="true" inheritrefs="true">
+    		<param name="class" value="HardTokenDataWS"/>
+    	</antcall>
+        <antcall target="overwritegenerated" inheritall="true" inheritrefs="true">
+           <param name="class" value="KeyStore"/>
+    	</antcall>
+    	<antcall target="overwritegenerated" inheritall="true" inheritrefs="true">
+    		<param name="class" value="KeyValuePair"/>
+    	</antcall>
+    	<antcall target="overwritegenerated" inheritall="true" inheritrefs="true">
+    		<param name="class" value="NameAndId"/>
+    	</antcall>
+    	<antcall target="overwritegenerated" inheritall="true" inheritrefs="true">
+    		<param name="class" value="PinDataWS"/>
+    	</antcall>
+    	<antcall target="overwritegenerated" inheritall="true" inheritrefs="true">
+    	 	<param name="class" value="RevokeStatus"/>
+    	</antcall>
+    	<antcall target="overwritegenerated" inheritall="true" inheritrefs="true">
+    	 	<param name="class" value="SshRequestMessageWs"/>
+    	</antcall>
+    	<antcall target="overwritegenerated" inheritall="true" inheritrefs="true">
+    		<param name="class" value="TokenCertificateRequestWS"/>
+    	</antcall>
+        <antcall target="overwritegenerated" inheritall="true" inheritrefs="true">
+           <param name="class" value="TokenCertificateResponseWS"/>
+    	</antcall>
+    	<antcall target="overwritegenerated" inheritall="true" inheritrefs="true">
+   			<param name="class" value="UserDataSourceVOWS"/>
+    	</antcall>
+        <antcall target="overwritegenerated" inheritall="true" inheritrefs="true">
+           <param name="class" value="UserDataVOWS"/>
+    	</antcall>
+        <antcall target="overwritegenerated" inheritall="true" inheritrefs="true">
+           <param name="class" value="UserMatch"/>
+    	</antcall>
+    	
+    	<!-- Compile the hand crafted files -->
+		<javac destdir="${ejbca-ws-cli.tmp.build}" debug="on" includeantruntime="no" encoding="UTF-8" target="${java.target.version}" classpathref="compile.classpath">
+			<src path="${ejbca-ws-cli.tmp.src}" />
+		</javac>
+    	
+    	<!-- Copy the compiled hand crafted files into the build dir. -->
+    	<copy overwrite="true" verbose="true"
+    		todir="${ejbca-ws-cli.build.dir}/org/ejbca/core/protocol/ws/client/gen">
+    		<fileset dir="${ejbca-ws-cli.tmp.build}/org/ejbca/core/protocol/ws/client/gen">
+    			<include name="**/*.class"/>
+    		</fileset>
+    	</copy>
+    	
+    	<!-- Recreate the EJBCA WS Client Library -->  	
+    	<jar destfile="${mod.ejbca-ws-client-gen.lib}">
+            <manifest>
+                <attribute name="Implementation-Version" value="${app.version}"/>
+            </manifest>
+        	<fileset dir="${ejbca-ws-cli.build.dir}" includes="**"/>
+    	</jar>
+    	
+    	<!-- Delete the tmp dir -->
+    	<delete dir="${ejbca-ws-cli.tmp}" includeemptydirs="true"/>
+
+    </target>
+	
+	<target name="overwritegenerated">
+		<!-- Overwrite the generated class to get constants, JavaDoc and additional methods -->
+		<copy overwrite="true" 
+			  file="${mod.ejbca-ws.path}/src/org/ejbca/core/protocol/ws/objects/${class}.java" 
+			  todir="${ejbca-ws-cli.tmp.src}/org/ejbca/core/protocol/ws/client/gen">
+		</copy>
+		<!-- Fix the package name -->
+		<replace file="${ejbca-ws-cli.tmp.src}/org/ejbca/core/protocol/ws/client/gen/${class}.java"
+			     token="package org.ejbca.core.protocol.ws.objects;"
+			     value="package org.ejbca.core.protocol.ws.client.gen;"/>
+		<!-- Fix the namespace --> 
+	 	<replace file="${ejbca-ws-cli.tmp.src}/org/ejbca/core/protocol/ws/client/gen/${class}.java"
+					     token="namespace = &quot;server&quot;"
+					     value="namespace = &quot;client&quot;"/>
+	</target>
+
+    <target name="setup">
+    	<mkdir dir="${mod.ejbca-ws-cli.dist}/lib" />
+    	<pathconvert property="compile.classpath.property" pathsep=" ">
+    	    <path refid="compile.classpath" />
+    		<map from="${ejbca.home}/" to=""/>
+    	</pathconvert>
+    	<copy todir="${mod.ejbca-ws-cli.dist}/lib" flatten="true">
+    		<fileset dir="${ejbca.home}" includes="${compile.classpath.property}"/>
+    	</copy>
+        <pathconvert property="soapclient.classpath.property" pathsep=" ">
+            <path refid="soapclient.classpath" />
+            <map from="${ejbca.home}/" to=""/>
+        </pathconvert>
+        <copy todir="${mod.ejbca-ws-cli.dist}/lib" flatten="true">
+            <fileset dir="${ejbca.home}" includes="${soapclient.classpath.property}"/>
+        </copy>
+    	<copy todir="${mod.ejbca-ws-cli.dist}" flatten="true">
+    		<fileset dir="${ejbca-ws-cli.dir}/resources" includes="**"/>
+    	</copy>
+        <copy file="${log4j.cli.file}" tofile="${mod.ejbca-ws-cli.dist}/log4j.xml" failonerror="true"/>
+        <copy file="${ejbca.home}/src/java/defaultvalues.properties" tofile="${mod.ejbca-ws-cli.dist}/defaultvalues.properties" failonerror="true"/>
+        <chmod file="${mod.ejbca-ws-cli.dist}/*.sh" perm="a+rx"/>
+    </target>
+</project>
