@@ -23,6 +23,7 @@
         <locale-config>
             <default-locale>en_US</default-locale>
             <!-- Disable locales used for testing that does not have proper translations. -->
+            <supported-locale>es_ES</supported-locale>
             <supported-locale>sv_SE</supported-locale>
             <supported-locale>ar_AE</supported-locale>
             <supported-locale>vi_VE</supported-locale>
