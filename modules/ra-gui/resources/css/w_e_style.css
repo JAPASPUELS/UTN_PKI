@@ -43,7 +43,7 @@ body.rtlDirection .contentForm\:more > .pure-g > .pure-u-1:nth-of-type(2) {
     height: 55px;
     min-height: 55px;
     font-weight: bold;
-    background: #fff;
+    background: rgb(205, 33, 34);
     z-index: 1;
 }
 
@@ -2100,8 +2100,8 @@ table#contentForm\:searchCertTable > tbody > tr > td > input:hover, #contentForm
     }
 
     .pure-menu-link {
-        background: #fff;
-        color: #35404e;
+        background: rgb(205, 33, 34);
+        color: #fff;
         font-size: 90%;
         height: 26px;
     }
@@ -2115,7 +2115,7 @@ table#contentForm\:searchCertTable > tbody > tr > td > input:hover, #contentForm
     .cas-menu-link:hover, .cas-menu-link:focus,
     .enroll-menu-link:hover, .enroll-menu-link:focus,
     .pure-menu-link:hover, .pure-menu-link:focus {
-        background: #fff;
+        background: rgb(205, 33, 34);
     }
 
     ul.pure-menu-list {

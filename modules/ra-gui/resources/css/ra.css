@@ -279,7 +279,7 @@
 }
 
 .pure-menu-item {
-	background: #ededed;
+	background: rgb(205, 33, 34);;
 }
 
 .pure-menu-link:hover, .pure-menu-link:focus {
@@ -308,7 +308,7 @@ img.menu_logo {
 
 /* CSS Specific for the bottom menu */
 .footer {
-	background: #ededed;
+	background: rgb(205, 33, 34);
 	color: #212021;
 	font-size: 0.875em;
 	padding: 1px;

@@ -55,7 +55,7 @@ import org.ejbca.ra.RaAuthenticationHelper;
  *
  */
 public class RaStyleRequestFilter implements Filter {
-    private final String RA_LOGO_PATH = "/ejbca/ra/img/EE/keyfactor-ejbca-logo.svg";
+    private final String RA_LOGO_PATH = "/ejbca/ra/img/EE/keyfactor-ejbca-logo.png";
     private static Logger log = Logger.getLogger(RaStyleRequestFilter.class);
 
     @EJB
