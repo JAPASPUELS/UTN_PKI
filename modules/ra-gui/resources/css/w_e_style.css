@@ -11,7 +11,7 @@ html {
 body.ltrDirection, body.rtlDirection {
     align-items: stretch;
     background-attachment: fixed;
-    background-color: #637b98;
+    background-color: #fff;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -121,12 +121,12 @@ img.menu_logo {
 .content {
     width: 95%;
     margin: 10px auto 20px auto;
-    background: #637b98;
+    background: #ffffff;
     flex: 1;
 }
 
 #title h1 {
-    color: #fff;
+    color: #000000;
     font-weight: bold;
     font-size: 28px;
     padding-bottom: 1%;
@@ -135,12 +135,12 @@ img.menu_logo {
 .header {
     width: 100%;
     padding: 0em 0em 0;
-    border-bottom: 3px solid #fcba00;
+    border-bottom: 3px solid rgb(205, 33, 34);
     text-align: left;
 }
 
 .content-body h2 {
-    color: #fff;
+    color: #000000;
     margin: 0.2em 0 0 2%;
     font-weight: 600;
 }
@@ -151,7 +151,7 @@ img.menu_logo {
 
 .internal-frame {
     border-radius: 2px;
-    background: #4f6177;
+    background: #fff;
     margin: 1% 0 4% 0;
 }
 
@@ -406,11 +406,11 @@ span .approvalStep,
 }
 
 ul.pure-menu-list > li.pure-menu-item > ul.pure-menu-children > form > li, ul.pure-menu-list > li.pure-menu-item > ul.pure-menu-children > li.pure-menu-item {
-    background: #517397;
+    background: rgba(175, 15, 15);
 }
 
 ul.pure-menu-list > li.pure-menu-item > ul.pure-menu-children > form > li > a, ul.pure-menu-list > li.pure-menu-item > ul.pure-menu-children > li.pure-menu-item > a {
-    background: #517397;
+    background: rgba(175, 15, 15);
     color: #fff;
 }
 
@@ -535,16 +535,16 @@ textarea#enrollWithRequestIdForm\:certificateRequest {
 }
 
 .tabButton.active {
-    background: #e9af13;
+    background: rgb(205, 33, 34);
 }
 
 .tabButton {
-    background: #cea01a;
+    background: rgb(205, 33, 34);
     color: #fff;
 }
 
 .tabButtonBar {
-    border-bottom: 0.3ex solid #e9af13;
+    border-bottom: 0.3ex solid rgb(205, 33, 34);
     width: 100%;
 }
 
@@ -723,7 +723,7 @@ select#detailsForm\:certDetails\:newRevocationReason ~ input {
 #requestInfoForm\:generateBcfks,
 #requestInfoForm\:generateJks,
 .executeActionButton {
-    background: #e9af13;
+    background: rgb(205, 33, 34);
     color: #fff;
 }
 
@@ -887,7 +887,7 @@ a {
 
 #contentForm\:showMoreButton,
 #contentForm\:showLessButton {
-    background: #e9af13;
+    background: rgb(205, 33, 34);
     color: #fff;
     margin: 3% 0 0 0;
 }
@@ -1604,7 +1604,7 @@ table#contentForm\:searchCertTable > tbody > tr > td > input:hover, #contentForm
     }
 
     div#menu.ejbca-menu ul.pure-menu-list {
-        background: #435d7a;
+        background: rgba(175, 15, 15);
         letter-spacing: 1px;
         position: absolute;
         right: 0;
@@ -1613,7 +1613,7 @@ table#contentForm\:searchCertTable > tbody > tr > td > input:hover, #contentForm
     }
 
     div#menu.ejbca-menu ul.pure-menu-list li.pure-menu-item {
-        background: #435d7a;
+        background: rgba(175, 15, 15);
         display: block;
     }
 
@@ -1632,11 +1632,11 @@ table#contentForm\:searchCertTable > tbody > tr > td > input:hover, #contentForm
     }
 
     div#menu.ejbca-menu ul.pure-menu-list ul.pure-menu-children li.pure-menu-item:hover {
-        background: #336699;
+        background: rgba(149, 13, 13, 1);
     }
 
     div#menu.ejbca-menu ul.pure-menu-list ul.pure-menu-children li.pure-menu-item:hover input.language_button {
-        background: #336699;
+        background: rgba(149, 13, 13, 1);
     }
 
     div#menu.ejbca-menu ul.pure-menu-list a.pure-menu-link:hover {
@@ -1656,7 +1656,7 @@ table#contentForm\:searchCertTable > tbody > tr > td > input:hover, #contentForm
     }
 
     div#menu.ejbca-menu ul.pure-menu-list hr.web-express.tablet {
-        background: #fcba00;
+        background: #ffffff;
         border: none;
         height: 3px;
         margin-left: 1.25em;
@@ -1670,7 +1670,7 @@ table#contentForm\:searchCertTable > tbody > tr > td > input:hover, #contentForm
 
     div#menu.ejbca-menu ul.pure-menu-list > li#menu-head-is-closed.web-express.tablet,
     div#menu.ejbca-menu ul.pure-menu-list > li#menu-head-is-open.web-express.tablet {
-        background: white;
+        background: rgb(205, 33, 34);
         display: block;
         height: 55px;
     }
@@ -1684,7 +1684,7 @@ table#contentForm\:searchCertTable > tbody > tr > td > input:hover, #contentForm
 
     div#menu.ejbca-menu ul.pure-menu-list > li#menu-head-is-closed.web-express.tablet > label > span,
     div#menu.ejbca-menu ul.pure-menu-list > li#menu-head-is-open.web-express.tablet > label > span {
-        background: #637b98;
+        background: #fff;
         display: block;
         height: 3px;
     }
@@ -1734,7 +1734,7 @@ table#contentForm\:searchCertTable > tbody > tr > td > input:hover, #contentForm
     }
 
     div#menu.ejbca-menu ul.pure-menu-list > li.pure-menu-has-children > label.web-express.tablet:hover ~ a.pure-menu-link {
-        background: #336699;
+        background: rgba(149, 13, 13, 1);
         color: #fcba00;
     }
 
@@ -1743,11 +1743,11 @@ table#contentForm\:searchCertTable > tbody > tr > td > input:hover, #contentForm
     }
 
     div#menu.ejbca-menu ul.pure-menu-list > li.pure-menu-has-children ul.pure-menu-children li.pure-menu-item > a {
-        background: #435d7a;
+        background: rgb(205, 33, 34);
     }
 
     div#menu.ejbca-menu ul.pure-menu-list > li.pure-menu-has-children ul.pure-menu-children li.pure-menu-item > a:hover {
-        background: #336699;
+        background: rgba(149, 13, 13, 1);
     }
 
     div#menu.ejbca-menu ul.pure-menu-list a.pure-menu-link ~ ul.pure-menu-children {
@@ -2129,7 +2129,7 @@ table#contentForm\:searchCertTable > tbody > tr > td > input:hover, #contentForm
     }
 
     .content {
-        background: #637b98;
+        background: #fff;
         flex: 1;
         margin: 50px auto 30px auto;
         width: 70em;
@@ -2150,7 +2150,7 @@ table#contentForm\:searchCertTable > tbody > tr > td > input:hover, #contentForm
         color: white;
         border-width: 5px;
         border-style: solid;
-        border-color: transparent transparent #517397;
+        border-color: transparent transparent rgba(175, 15, 15);
         margin: 0px 0px 0px -12px;
     }
 
@@ -2322,7 +2322,7 @@ table#contentForm\:searchCertTable > tbody > tr > td > input:hover, #contentForm
     }
 
     .infoMessage {
-        color: #fff;
+        color: #000000;
         position: fixed;
         margin: 0 0 0 0;
         width: auto;
