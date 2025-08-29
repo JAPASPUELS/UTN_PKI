@@ -240,7 +240,7 @@ img.menu_logo {
 span .approvalStep,
 #contentForm\:filteredResults,
 .bodyText {
-    color: #fff;
+    color: #000000;
 }
 
 #contentForm\:currentStep div > label {
@@ -402,7 +402,7 @@ span .approvalStep,
 }
 
 .language_button:hover {
-    color: #d0a644;
+    color: #4f6177;
 }
 
 ul.pure-menu-list > li.pure-menu-item > ul.pure-menu-children > form > li, ul.pure-menu-list > li.pure-menu-item > ul.pure-menu-children > li.pure-menu-item {
@@ -415,7 +415,7 @@ ul.pure-menu-list > li.pure-menu-item > ul.pure-menu-children > form > li > a, u
 }
 
 ul.pure-menu-list > li.pure-menu-item > ul.pure-menu-children > form > li > a:hover, ul.pure-menu-list > li.pure-menu-item > ul.pure-menu-children > li.pure-menu-item > a:hover {
-    color: #d0a644;
+    color: #4f6177;
 }
 
 /* Kan ev. tas bort då nedanståden står i ovanstående kod */
@@ -1279,7 +1279,7 @@ span.approvalStep {
 
 /*CSS för scroll to top-funktion*/
 #web-express-scroll-to-top {
-    background: #fcba00;
+    background: #979797;
     bottom: 130px;
     display: none;
     position: fixed;
@@ -1640,7 +1640,7 @@ table#contentForm\:searchCertTable > tbody > tr > td > input:hover, #contentForm
     }
 
     div#menu.ejbca-menu ul.pure-menu-list a.pure-menu-link:hover {
-        color: #fcba00;
+        color: #979797;
     }
 
     div#menu.ejbca-menu ul.pure-menu-list li#menu-title.web-express.tablet {
@@ -1735,7 +1735,7 @@ table#contentForm\:searchCertTable > tbody > tr > td > input:hover, #contentForm
 
     div#menu.ejbca-menu ul.pure-menu-list > li.pure-menu-has-children > label.web-express.tablet:hover ~ a.pure-menu-link {
         background: rgba(149, 13, 13, 1);
-        color: #fcba00;
+        color: #979797;
     }
 
     div#menu.ejbca-menu ul.pure-menu-list > li.pure-menu-has-children ul.pure-menu-children li.pure-menu-item {
@@ -1764,7 +1764,7 @@ table#contentForm\:searchCertTable > tbody > tr > td > input:hover, #contentForm
     }
 
     div#menu.ejbca-menu ul.pure-menu-list input[type="checkbox"].web-express.tablet:checked ~ a {
-        color: #fcba00;
+        color: #979797;
         padding-bottom: 0.625em; /* un-do padding for :last-child */
     }
 
