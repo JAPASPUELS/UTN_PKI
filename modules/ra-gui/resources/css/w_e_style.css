@@ -899,7 +899,7 @@ a {
 
 .bigStatus, .smallStatus, .editLogEntry {
     margin: 1% 0 0 1%;
-    color: #fff;
+    color: #000000;
     font-style: italic;
 }
 
@@ -1140,10 +1140,10 @@ label[for="requestTemplateForm:selectKeyPairGenerationOneMenu"] {
 .infoMessage,
 .warnMessage,
 .errorMessage {
-    background: #000;
+    background: #c9c9c9;
     color: #fff;
     border-style: solid;
-    border-color: #000;
+    border-color: #c9c9c9;
     list-style: none;
     opacity: 0.8;
 }
@@ -1248,7 +1248,7 @@ span.approvalStep {
 #enrollWithRequestIdForm\:requestKeyAlgorithm,
 #enrollWithUsernameForm\:enteredUsername,
 #enrollWithUsernameForm\:requestKeyAlgorithm {
-    color: #fff;
+    color: #000000;
     font-style: italic;
 }
 
@@ -1326,7 +1326,7 @@ span.approvalStep {
 #detailsForm\:certDetails\:showMoreCertificateDetails > span {
     display: inline-block;
     width: 95%;
-    color: #fff;
+    color: #000000;
     margin-bottom: 3%;
 }
 
