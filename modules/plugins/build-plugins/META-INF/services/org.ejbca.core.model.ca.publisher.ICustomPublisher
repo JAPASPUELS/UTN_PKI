@@ -1,0 +1,2 @@
+org.ejbca.scp.publisher.ScpPublisher
+org.ejbca.core.model.CertSafePublisher

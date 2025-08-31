@@ -1,0 +1,2 @@
+org.cesecore.config.GlobalCesecoreConfigurationCache
+org.cesecore.certificates.ocsp.cache.GlobalOcspConfigurationCache

@@ -1,0 +1,6 @@
+"Project";                      "Library Name";                                 "License type(s)";      "License text";                 "Source";                                                           		"Comment";
+"Jakarta EE / JAXB Core";		"jaxb-core-4.0.2";							    "EDLv1.0"; 				"LICENSE-EDL-1.0";				"https://mvnrepository.com/artifact/com.sun.xml.bind/jaxb-core/4.0.2";		"Dependency for JAXB libraries.";
+"Jakarta EE / JAXB Runtime";	"jaxb-impl-4.0.2";								"EDLv1.0"; 				"LICENSE-EDL-1.0";				"https://mvnrepository.com/artifact/com.sun.xml.bind/jaxb-impl/4.0.2";		"Dependency for WSGEN tool.";
+"Jakarta EE / JAXB JXC";		"jaxb-jxc-4.0.2";								"EDLv1.0"; 				"LICENSE-EDL-1.0";				"https://mvnrepository.com/artifact/com.sun.xml.bind/jaxb-jxc/4.0.2";		"Dependency for WSGEN tool.";
+"Jakarta EE / JAXB XJC";		"jaxb-xjc-4.0.2";								"EDLv1.0"; 				"LICENSE-EDL-1.0";				"https://mvnrepository.com/artifact/com.sun.xml.bind/jaxb-xjc/4.0.2";		"Dependency for WSGEN tool.";
+"Jakarta EE / JAXWS Tools";		"jaxws-tools-4.0.1";							"EDLv1.0"; 				"LICENSE-EDL-1.0";				"https://mvnrepository.com/artifact/com.sun.xml.ws/jaxws-tools/4.0.1";		"Dependency for WSGEN tool. Has a dependency on jaxws-rt-4.0.1";

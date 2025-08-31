@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="jakarta.faces.core"
+    xmlns:h="jakarta.faces.html"
+    xmlns:ui="jakarta.faces.facelets">
+	<ui:remove>
+		<!--
+    /*************************************************************************
+     *                                                                       *
+     *  EJBCA: The OpenSource Certificate Authority                          *
+     *                                                                       *
+     *  This software is free software; you can redistribute it and/or       *
+     *  modify it under the terms of the GNU Lesser General Public           *
+     *  License as published by the Free Software Foundation; either         *
+     *  version 2.1 of the License, or any later version.                    *
+     *                                                                       *
+     *  See terms of license at gnu.org.                                     *
+     *                                                                       *
+     *************************************************************************/
+     -->
+	</ui:remove>
+
+<body>
+<ui:composition>
+	<h:panelGroup>
+		<h:outputText value="#{web.text.PUBLISHERQUEUESETTINGS}"
+			style="font-weight:bold;" />
+	</h:panelGroup>
+	<h:panelGroup>&#xA0;</h:panelGroup>
+
+	<h:panelGroup>
+		<h:outputText value="#{web.text.PUBLISHERSTOCHECK}" />
+	</h:panelGroup>
+	<h:panelGroup>
+		<h:selectManyListbox id="checkPublisherIds"
+			value="#{editService.publishWorkerType.selectedPublisherIdsToCheck}"
+			size="10" disabled="#{not editService.hasEditRights}">
+			<f:selectItems value="#{editService.availablePublishers}" />
+		</h:selectManyListbox>
+	</h:panelGroup>
+	
+	<h:panelGroup>
+		<h:outputText value="#{web.text.PUBLISHERQUEUEMAX}" />		
+	</h:panelGroup>
+	<h:panelGroup>
+	<ui:remove>
+		<!--
+		The below javascript only allows the input of numbers
+		  -->
+	</ui:remove>
+			<h:inputText id="publisherQueueMax"
+				onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;"
+				disabled="#{not editService.hasEditRights}" size="10"
+				value="#{editService.publishWorkerType.maxNumberOfEntriesToPublish}">
+				 <f:validator validatorId="noNegativeNumbersValidator"/>
+			</h:inputText>
+			<ui:remove>
+				<!-- Solve spacing with CSS  -->
+			</ui:remove>
+			<h:outputText>&#xA0;&#xA0;</h:outputText>
+			<h:outputText value="#{web.text.PUBLISHERQUEUEMAX_HELP}"
+			styleClass="help" />
+		</h:panelGroup>
+
+</ui:composition>
+</body>
+</html>

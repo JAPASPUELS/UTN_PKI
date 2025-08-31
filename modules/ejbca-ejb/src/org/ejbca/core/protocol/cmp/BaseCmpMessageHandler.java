@@ -1,0 +1,230 @@
+/*************************************************************************
+ *                                                                       *
+ *  EJBCA Community: The OpenSource Certificate Authority                *
+ *                                                                       *
+ *  This software is free software; you can redistribute it and/or       *
+ *  modify it under the terms of the GNU Lesser General Public           *
+ *  License as published by the Free Software Foundation; either         *
+ *  version 2.1 of the License, or any later version.                    *
+ *                                                                       *
+ *  See terms of license at gnu.org.                                     *
+ *                                                                       *
+ *************************************************************************/
+
+package org.ejbca.core.protocol.cmp;
+
+import jakarta.ejb.EJBTransactionRolledbackException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.PrivateKey;
+import java.security.cert.Certificate;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.cesecore.authentication.tokens.AlwaysAllowLocalAuthenticationToken;
+import org.cesecore.authentication.tokens.AuthenticationToken;
+import org.cesecore.authentication.tokens.UsernamePrincipal;
+import org.cesecore.authorization.AuthorizationDeniedException;
+import org.cesecore.certificates.ca.CACommon;
+import org.cesecore.certificates.ca.CADoesntExistsException;
+import org.cesecore.certificates.ca.CAInfo;
+import org.cesecore.certificates.ca.CaSessionLocal;
+import org.cesecore.certificates.ca.catoken.CATokenConstants;
+import org.cesecore.certificates.certificate.request.FailInfo;
+import org.cesecore.certificates.certificateprofile.CertificateProfileSession;
+import org.cesecore.internal.InternalResources;
+import org.cesecore.keys.token.CryptoTokenSessionLocal;
+import org.ejbca.config.CmpConfiguration;
+import org.ejbca.core.ejb.EjbBridgeSessionLocal;
+import org.ejbca.core.ejb.ra.raadmin.EndEntityProfileSessionLocal;
+import org.ejbca.core.model.ra.NotFoundException;
+import org.ejbca.core.model.ra.raadmin.EndEntityProfile;
+import org.ejbca.core.model.ra.raadmin.EndEntityProfileNotFoundException;
+
+import com.keyfactor.util.certificate.DnComponents;
+import com.keyfactor.util.keys.token.CryptoTokenOfflineException;
+
+/**
+ * Base class for CMP message handlers that require RA mode secret verification.
+ * 
+ * This class contains common methods for extracting the RA authentication secret.
+ * 
+ */
+public class BaseCmpMessageHandler {
+
+	private static Logger LOG = Logger.getLogger(BaseCmpMessageHandler.class);
+    /** Internal localization of logs and errors */
+    private static final InternalResources INTRES = InternalResources.getInstance();
+
+    /** strings for error messages defined in internal resources */
+	protected static final String CMP_ERRORADDUSER = "cmp.erroradduser";
+	protected static final String CMP_ERRORGENERAL = "cmp.errorgeneral";
+	
+	protected static final int CMP_GET_EEP_FROM_KEYID  = -1;
+	protected static final int CMP_GET_CP_FROM_KEYID   = -1;
+	protected static final int CMP_GET_CA_FROM_EEP     = -1;
+	protected static final int CMP_GET_CA_FROM_KEYID   = -2;
+
+	protected AuthenticationToken admin;
+	protected String confAlias;
+	protected EjbBridgeSessionLocal ejbBridgeSession;
+	protected CaSessionLocal caSession;
+	protected EndEntityProfileSessionLocal endEntityProfileSession;
+	protected CertificateProfileSession certificateProfileSession;
+	protected CryptoTokenSessionLocal cryptoTokenSession;
+	protected CmpConfiguration cmpConfiguration;
+
+	protected BaseCmpMessageHandler() {
+	    this.confAlias = null;
+	}
+
+    protected BaseCmpMessageHandler(final AuthenticationToken authenticationToken, final CmpConfiguration cmpConfiguration, String configAlias, EjbBridgeSessionLocal ejbBridgeSession) {
+        this.admin = authenticationToken;
+        this.confAlias = configAlias;
+        this.cmpConfiguration = cmpConfiguration;
+        this.ejbBridgeSession = ejbBridgeSession;
+        this.caSession = ejbBridgeSession.getCaSession();
+        this.endEntityProfileSession = ejbBridgeSession.getEndEntityProfileSession();
+        this.certificateProfileSession = ejbBridgeSession.getCertificateProfileSession();
+        this.cryptoTokenSession = ejbBridgeSession.getCryptoTokenSession();
+    }
+
+	/** @return the CA id to use for a request based on the current configuration, used end entity profile and keyId. */
+	protected int getUsedCaId(final String keyId, final int eeProfileId) throws CADoesntExistsException, AuthorizationDeniedException {
+		int ret = 0;
+		final String caName = cmpConfiguration.getRACAName(this.confAlias);
+		if (StringUtils.equals(caName, "ProfileDefault")) {
+			if (LOG.isDebugEnabled()) {
+				LOG.debug("Using default CA from End Entity Profile CA when adding users in RA mode.");
+			}
+			// get default CA id from end entity profile
+			final EndEntityProfile eeProfile = endEntityProfileSession.getEndEntityProfileNoClone(eeProfileId);
+			ret = eeProfile.getDefaultCA();
+			if (ret == -1) {
+				LOG.error("No default CA id for end entity profile: "+eeProfileId);
+			} else {
+				if (LOG.isDebugEnabled()) {
+					LOG.debug("Using CA with id: "+ret);
+				}
+			}
+		} else if (StringUtils.equals(caName, CmpConfiguration.PROFILE_USE_KEYID)) {
+			if (LOG.isDebugEnabled()) {
+				LOG.debug("Using keyId as CA name when adding users in RA mode: "+keyId);
+			}
+			if(keyId != null) {
+			    // Use keyId as CA name
+			    // No need to do access control here, just to get the CAId
+			    final CAInfo info = caSession.getCAInfoInternal(-1, keyId, true);
+			    if (LOG.isDebugEnabled()) {
+			        LOG.debug("Using CA: "+info.getName());
+			    }
+			    ret = info.getCAId();
+			} else {
+			    LOG.error("Expecting the CA name to be specified in the KeyID parameter, but the KeyID parameter is 'null'");
+			}
+		} else {
+            // No need to do access control here, just to get the CAId
+            final CAInfo info = caSession.getCAInfoInternal(-1, caName, true);
+            if (info == null) {
+                throw new CADoesntExistsException("CA with name " + caName + " doesn't exist.");
+            }
+			ret = info.getCAId();					
+			if (LOG.isDebugEnabled()) {
+				LOG.debug("Using fixed caName when adding users in RA mode: "+caName+"("+ret+")");
+			}
+		}
+		return ret;
+	}
+
+    /** 
+     * @param keyId the keyId from the request, if there is any
+     * @return the end entity profile name to use for a request based on the current configuration and keyId. 
+     */
+	protected int getUsedEndEntityProfileId(final String keyId) throws EndEntityProfileNotFoundException {
+        final int eeProfileId;
+        final String eeProfile = this.cmpConfiguration.getRAEEProfile(this.confAlias);
+        if (StringUtils.equals(CmpConfiguration.PROFILE_USE_KEYID, eeProfile)) {
+            eeProfileId = endEntityProfileSession.getEndEntityProfileId(keyId);
+        } else {
+            eeProfileId = Integer.parseInt(eeProfile);
+        }
+        return eeProfileId;
+    }
+    
+
+	/** 
+	 * @return the certificate profile name to use for a request based on the current configuration and keyId. 
+	 */
+	protected String getUsedCertProfileName(final String keyId, final int eeProfileId) throws NotFoundException {
+	    // Get the configured string, may be a profile name or 'KeyId' or 'ProfileDefault'
+		String certificateProfile = cmpConfiguration.getRACertProfile(this.confAlias);
+		if (StringUtils.equals(certificateProfile, "ProfileDefault")) {
+            // get default certificate profile id from end entity profile
+            final EndEntityProfile eeProfile = endEntityProfileSession.getEndEntityProfileNoClone(eeProfileId);
+            if (eeProfile == null) {
+                final String msg = INTRES.getLocalizedMessage("store.errorcertprofilenotexist", eeProfileId);
+                LOG.info(msg);
+                throw new NotFoundException(msg);
+            }
+            certificateProfile = certificateProfileSession.getCertificateProfileName(eeProfile.getDefaultCertificateProfile());
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Using default certificate profile from End Entity Profile: " + certificateProfile);
+            }
+		} else if (StringUtils.equals(certificateProfile, CmpConfiguration.PROFILE_USE_KEYID)) {
+		    if(keyId != null) {
+		        if (LOG.isDebugEnabled()) {
+		            LOG.debug("Using Certificate Profile with same name as KeyId in request: " + keyId);
+		        }
+		        certificateProfile = keyId;
+		    } else {
+                LOG.error("Expecting the Certificate Profile name to be specified in the KeyID parameter, but the KeyID parameter is 'null'");
+		    }
+		}
+		return certificateProfile;
+	}
+	/** @return the certificate profile to use for a request based on the current configuration and keyId. */
+	protected int getUsedCertProfileId(final String certificateProfile) throws NotFoundException {
+		final int ret = this.certificateProfileSession.getCertificateProfileId(certificateProfile);					
+		if (ret == 0) {
+			final String msg = "No certificate profile found with name: "+certificateProfile;
+			LOG.info(msg);
+			throw new NotFoundException(msg);
+		}
+		return ret;
+	}
+
+	protected CmpErrorResponseMessage sendSignedErrorMessage(final BaseCmpMessage cmpMessage, FailInfo failInfo, String errmsg ){
+	    String caDn = cmpMessage.getHeader().getRecipient().getName().toString();
+	    if (caDn == null) {
+	        caDn = cmpConfiguration.getCMPDefaultCA(this.confAlias);
+	    }
+	    int errorResponseSigningCaId;
+	    errorResponseSigningCaId = DnComponents.stringToBCDNString(caDn).hashCode();
+	    CACommon signCa = null;
+	    String aliasCertSign = null;
+	    PrivateKey signKey = null;
+	    String provider = null;
+	    List<Certificate> signCachain = null;
+	    try {
+	        signCa = caSession.getCA(new AlwaysAllowLocalAuthenticationToken(new UsernamePrincipal("cmpProtocolSignErrorResponse")), errorResponseSigningCaId);
+	        if (signCa != null) {
+	            signCachain = signCa.getCertificateChain();
+	        } else {
+	            return (CmpErrorResponseMessage) CmpMessageHelper.createUnprotectedErrorMessage(cmpMessage, failInfo, errmsg);
+	        }
+	        aliasCertSign = signCa.getCAToken().getAliasFromPurpose(CATokenConstants.CAKEYPURPOSE_CERTSIGN);
+	        signKey = cryptoTokenSession.getCryptoToken(signCa.getCAToken().getCryptoTokenId()).getPrivateKey(aliasCertSign);
+	        provider = cryptoTokenSession.getCryptoToken(signCa.getCAToken().getCryptoTokenId()).getSignProviderName();
+	        return CmpMessageHelper.createSignedErrorMessage(cmpMessage.getHeader(), failInfo,  errmsg, signCachain, signKey, 
+	                signCa.getCAToken().getSignatureAlgorithm(), provider);
+	    } catch (AuthorizationDeniedException | CryptoTokenOfflineException | InvalidKeyException | NoSuchAlgorithmException | NoSuchProviderException 
+	            | EJBTransactionRolledbackException e) {
+	        if (LOG.isDebugEnabled()) {
+	            LOG.debug("Could not sign CmpErrorResponseMessage, creating unprotected message. " + e.getMessage());
+	        }
+	        return (CmpErrorResponseMessage) CmpMessageHelper.createUnprotectedErrorMessage(cmpMessage.getHeader(), failInfo,  errmsg);
+	    }
+	}
+}

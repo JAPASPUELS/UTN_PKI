@@ -1,0 +1,56 @@
+/*************************************************************************
+ *                                                                       *
+ *  EJBCA Community: The OpenSource Certificate Authority                *
+ *                                                                       *
+ *  This software is free software; you can redistribute it and/or       *
+ *  modify it under the terms of the GNU Lesser General Public           *
+ *  License as published by the Free Software Foundation; either         *
+ *  version 2.1 of the License, or any later version.                    *
+ *                                                                       *
+ *  See terms of license at gnu.org.                                     *
+ *                                                                       *
+ *************************************************************************/
+package org.ejbca.core.ejb.crl;
+
+import java.util.Collection;
+import java.util.Set;
+
+import jakarta.ejb.EJB;
+import jakarta.ejb.Stateless;
+import jakarta.ejb.TransactionAttribute;
+import jakarta.ejb.TransactionAttributeType;
+
+import org.cesecore.authentication.tokens.AuthenticationToken;
+import org.cesecore.authorization.AuthorizationDeniedException;
+import org.cesecore.certificates.ca.CADoesntExistsException;
+import org.cesecore.certificates.ca.CAOfflineException;
+
+import com.keyfactor.util.keys.token.CryptoTokenOfflineException;
+
+/**
+ *
+ */
+@Stateless
+@TransactionAttribute(TransactionAttributeType.SUPPORTS) // CRLs may be huge and should not be created inside a transaction if it can be avoided
+public class PublishingCrlProxySessionBean implements PublishingCrlProxySessionRemote {
+
+    @EJB
+    private PublishingCrlSessionLocal publishingCrlSession;
+    
+    @Override
+    public Set<Integer> createCRLs(AuthenticationToken admin, Collection<Integer> caids, long addtocrloverlaptime, CrlCreationParams params) throws AuthorizationDeniedException {
+        return publishingCrlSession.createCRLs(admin, caids, addtocrloverlaptime, params);
+    }
+
+    @Override
+    public Set<Integer> createDeltaCRLs(AuthenticationToken admin, Collection<Integer> caids, long crloverlaptime) throws AuthorizationDeniedException {
+        return publishingCrlSession.createDeltaCRLs(admin, caids, crloverlaptime);
+    }
+
+    @Override
+    public boolean createDeltaCrlConditioned(AuthenticationToken admin, int caid, long crloverlaptime)
+            throws CryptoTokenOfflineException, CAOfflineException, CADoesntExistsException, AuthorizationDeniedException {
+        return publishingCrlSession.createDeltaCrlConditioned(admin, caid, crloverlaptime);
+    }
+
+}
