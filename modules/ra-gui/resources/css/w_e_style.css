@@ -151,7 +151,11 @@ img.menu_logo {
 
 .internal-frame {
     border-radius: 2px;
+<<<<<<< HEAD
     background: #e5e5e5;
+=======
+    background: #fff;
+>>>>>>> db91694ae74c08f1d45cd8fbf939156dd0d64df1
     margin: 1% 0 4% 0;
 }
 
@@ -511,7 +515,11 @@ td.noneCell, td span.noneCell {
     margin-left: 2%;
     margin-bottom: 5%;
     display: block;
+<<<<<<< HEAD
     color: #000000;
+=======
+    color: #fff;
+>>>>>>> db91694ae74c08f1d45cd8fbf939156dd0d64df1
     word-break:break-all;
 }
 
@@ -996,7 +1004,11 @@ label[for="requestTemplateForm:selectKeyPairGenerationOneMenu"] {
 #manageRequestForm\:viewRequestDataTable > span {
     display: block;
     max-width: 98%;
+<<<<<<< HEAD
     color: #000000;
+=======
+    color: #fff;
+>>>>>>> db91694ae74c08f1d45cd8fbf939156dd0d64df1
     margin-bottom: 4%;
 }
 

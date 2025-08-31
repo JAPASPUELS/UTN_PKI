@@ -1,3 +1,9 @@
+<<<<<<< HEAD
 org.ejbca.core.model.validation.GoogleSafeBrowsingValidator
 org.ejbca.core.model.validation.DomainAllowlistValidator
 org.ejbca.core.model.validation.DomainBlacklistValidator
+=======
+org.ejbca.core.model.validation.DomainBlacklistValidator
+org.ejbca.core.model.validation.DomainAllowlistValidator
+org.ejbca.core.model.validation.GoogleSafeBrowsingValidator
+>>>>>>> db91694ae74c08f1d45cd8fbf939156dd0d64df1

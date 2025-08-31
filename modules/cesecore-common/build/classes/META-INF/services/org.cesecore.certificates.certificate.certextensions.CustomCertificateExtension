@@ -1,3 +1,9 @@
+<<<<<<< HEAD
 org.cesecore.certificates.certificate.certextensions.standard.SubjectKeyIdentifier
 org.cesecore.certificates.certificate.certextensions.standard.AuthorityKeyIdentifier
 org.cesecore.certificates.certificate.certextensions.BasicCertificateExtension
+=======
+org.cesecore.certificates.certificate.certextensions.BasicCertificateExtension
+org.cesecore.certificates.certificate.certextensions.standard.SubjectKeyIdentifier
+org.cesecore.certificates.certificate.certextensions.standard.AuthorityKeyIdentifier
+>>>>>>> db91694ae74c08f1d45cd8fbf939156dd0d64df1

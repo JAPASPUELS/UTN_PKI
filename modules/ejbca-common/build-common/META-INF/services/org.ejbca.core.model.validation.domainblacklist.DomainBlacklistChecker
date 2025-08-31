@@ -1,3 +1,9 @@
+<<<<<<< HEAD
 org.ejbca.core.model.validation.domainblacklist.DomainBlacklistExactMatchChecker
 org.ejbca.core.model.validation.domainblacklist.DomainBlacklistBaseDomainChecker
 org.ejbca.core.model.validation.domainblacklist.DomainBlacklistComponentChecker
+=======
+org.ejbca.core.model.validation.domainblacklist.DomainBlacklistComponentChecker
+org.ejbca.core.model.validation.domainblacklist.DomainBlacklistBaseDomainChecker
+org.ejbca.core.model.validation.domainblacklist.DomainBlacklistExactMatchChecker
+>>>>>>> db91694ae74c08f1d45cd8fbf939156dd0d64df1
