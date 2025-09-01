@@ -21,9 +21,9 @@
                         https://jakarta.ee/xml/ns/jakartaee/web-facesconfig_4_0.xsd">
     <application>
         <locale-config>
-            <default-locale>en_US</default-locale>
+            <default-locale>es_ES</default-locale>
             <!-- Disable locales used for testing that does not have proper translations. -->
-            <supported-locale>es_ES</supported-locale>
+            <supported-locale>en_US</supported-locale>
             <supported-locale>sv_SE</supported-locale>
             <supported-locale>ar_AE</supported-locale>
             <supported-locale>vi_VE</supported-locale>
