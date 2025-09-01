@@ -87,7 +87,7 @@ h1, h2, h3, h4, p, span {
 }
 
 .content-body h3 {
-    color: #fff;
+    color: #000000;
     width: 90%;
     margin: 2% 0 2% 1.5%;
 }
@@ -183,7 +183,7 @@ img.menu_logo {
 }
 
 #detailsForm {
-    background: #4f6177;
+    background: #e5e5e5;
     border-radius: 2px;
 }
 
@@ -218,7 +218,7 @@ img.menu_logo {
 
 .recovery-group {
     border-radius: 2px;
-    background: #4f6177;
+    background: #e5e5e5;
     margin: 1% 0 4% 18%;
 }
 
@@ -654,7 +654,7 @@ textarea#enrollWithRequestIdForm\:certificateRequest {
 
 #detailsForm > span.pure-u-1:nth-of-type(2) > span:not(.revokeGroup) {
     margin-left: 2.5%;
-    color: #fff;
+    color: #000000;
     margin-bottom: 4%;
     display: inline-block;
 }
@@ -829,7 +829,7 @@ select#detailsForm\:certDetails\:newRevocationReason ~ input {
 }
 
 a {
-    color: #e9af13;
+    color: #e9322d;
     text-decoration: none;
 }
 
@@ -947,7 +947,7 @@ a {
 #expandRequestDetails,
 #expandStatusDetails,
 #expandSearchDetails {
-    color: #fff;
+    color: #000000;
 }
 
 /*gör att långa rader i tabeller bryts, ska högst troligt tas bort*/
@@ -1141,7 +1141,7 @@ label[for="requestTemplateForm:selectKeyPairGenerationOneMenu"] {
 .warnMessage,
 .errorMessage {
     background: #c9c9c9;
-    color: #fff;
+    color: #000000;
     border-style: solid;
     border-color: #c9c9c9;
     list-style: none;
@@ -1150,7 +1150,7 @@ label[for="requestTemplateForm:selectKeyPairGenerationOneMenu"] {
 
 #requestTemplateForm\:endEntityProfileDescription,
 #requestTemplateForm\:certificateProfileDescription {
-    color: white;
+    color: rgb(0, 0, 0);
     font-size: 80%;
 }
 
@@ -1208,7 +1208,7 @@ span.approvalStep {
 
 .approvalStep > div > .approvalControl > span {
     display: block;
-    color: #fff;
+    color: #000000;
     margin-bottom: 4%;
 }
 
@@ -1861,7 +1861,7 @@ table#contentForm\:searchCertTable > tbody > tr > td > input:hover, #contentForm
     }
 
     .infoMessage {
-        color: #fff;
+        color: #000000;
         position: fixed;
         margin: 8% 0 0 0;
     }
@@ -2575,7 +2575,7 @@ table#contentForm\:searchCertTable > tbody > tr > td > input:hover, #contentForm
 /* Inspect page */
 .inspect-container {
     padding: 2em;
-    color: #FFFFFF;
+    color: #000000;
 }
 
 .inspect-container > div.pure-u-1 {
