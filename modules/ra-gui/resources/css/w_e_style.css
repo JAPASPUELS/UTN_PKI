@@ -67,7 +67,7 @@ form#contentForm.pure-form > div.tabButtonBar > input {
 form#contentForm.pure-form > div.tabButtonBar > input:disabled {
     -webkit-opacity: 1;
     -webkit-text-fill-color: white;
-    background: #e9af13;
+    background: rgb(209, 10, 17);
 }
 
 form#contentForm.pure-form > div.tabButtonBar > input:not(:disabled) {
@@ -481,7 +481,7 @@ table.pure-table > tbody > tr {
 }
 
 table.pure-table > tbody a {
-    color: #e9af13;
+    color: rgb(209, 10, 17);
     text-decoration: none;
 }
 
@@ -601,14 +601,14 @@ textarea#enrollWithRequestIdForm\:certificateRequest {
 
 /*NY search for certificates >  show more-knapp */
 #detailsForm\:certDetails\:showMoreLessDetailsButton {
-    background: #e9af13;
+    background: rgb(209, 10, 17);
     color: #fff;
     display: block;
     margin: 2% 0 0 0;
 }
 
 #detailsForm\:certDetails\:showHideFullPublicKeysButton {
-    background: #e9af13;
+    background: rgb(209, 10, 17);
     color: #fff;
     display: block;
     margin: 2% 0 0 0;
@@ -879,7 +879,7 @@ a {
 }
 
 #contentForm\:filteredResults > table.pure-table:not(#contentForm\:manageRequestTable) > tbody > tr > td > input {
-    color: #e9af13;
+    color: rgb(209, 10, 17);
 }
 
 .radio-button-table {
@@ -910,7 +910,7 @@ a {
 
 .viewMoreLink {
     /*view-knappen i search for certificates*/
-    color: #e9af13;
+    color: rgb(209, 10, 17);
     background: none;
     font-weight: bold;
     font-size: 76%;
@@ -1342,7 +1342,7 @@ span.approvalStep {
 #detailsForm\:certDetails\:showPublicKeys > span {
     display: inline-block;
     width: 95%;
-    color: #fff;
+    color: #000000;
     margin-bottom: 3%;
 }
 
