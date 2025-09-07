@@ -114,8 +114,9 @@ h1, h2, h3, h4, p, span {
 }
 
 img.menu_logo {
-    height: 1.5em;
+    height: 3.5em;
     z-index: 9999;
+    transform: translateY(-15px);
 }
 
 .content {
@@ -2091,7 +2092,8 @@ table#contentForm\:searchCertTable > tbody > tr > td > input:hover, #contentForm
     }
 
     img.menu_logo {
-        height: 2em;
+        height: 5em;
+        transform: translateY(-20px);
     }
 
     .pure-menu-heading {
