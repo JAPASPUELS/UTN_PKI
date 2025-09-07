@@ -1021,6 +1021,7 @@
 										render=":requestInfoForm:userCredentialsMessage" />
 									<f:validator validatorId="extendedRequiredValidator"/>
 									<f:attribute name="_required" value="true"/>
+									<f:passThroughAttribute name="minlength" value="7"/>
 								</h:inputText>
 								<h:message for="usernameField" id="usernameFieldMessage" styleClass="validationErrorMessage showErrorMessage"/>
 							</h:panelGroup>
