@@ -214,7 +214,7 @@
 	padding: 0;
 	outline: none;
 	outline-offset: 0;
-	color: rgb(205, 33, 34);
+	color: rgb(209, 10, 17);
 	cursor: pointer;
 	line-height: inherit;
 	float: right;
@@ -279,7 +279,7 @@
 }
 
 .pure-menu-item {
-	background: rgb(205, 33, 34);
+	background: rgb(209, 10, 17);
 }
 
 .pure-menu-link:hover, .pure-menu-link:focus {
@@ -308,7 +308,7 @@ img.menu_logo {
 
 /* CSS Specific for the bottom menu */
 .footer {
-	background: rgb(205, 33, 34);
+	background: rgb(209, 10, 17);
 	color: #fff;
 	font-size: 0.875em;
 	padding: 1px;

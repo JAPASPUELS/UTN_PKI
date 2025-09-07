@@ -43,7 +43,7 @@ body.rtlDirection .contentForm\:more > .pure-g > .pure-u-1:nth-of-type(2) {
     height: 55px;
     min-height: 55px;
     font-weight: bold;
-    background: rgb(205, 33, 34);
+    background: rgb(209, 10, 17);
     z-index: 1;
 }
 
@@ -136,7 +136,7 @@ img.menu_logo {
 .header {
     width: 100%;
     padding: 0em 0em 0;
-    border-bottom: 3px solid rgb(205, 33, 34);
+    border-bottom: 3px solid rgb(209, 10, 17);
     text-align: left;
 }
 
@@ -536,16 +536,16 @@ textarea#enrollWithRequestIdForm\:certificateRequest {
 }
 
 .tabButton.active {
-    background: rgb(205, 33, 34);
+    background: rgb(209, 10, 17);
 }
 
 .tabButton {
-    background: rgb(205, 33, 34);
+    background: rgb(209, 10, 17);
     color: #fff;
 }
 
 .tabButtonBar {
-    border-bottom: 0.3ex solid rgb(205, 33, 34);
+    border-bottom: 0.3ex solid rgb(209, 10, 17);
     width: 100%;
 }
 
@@ -724,7 +724,7 @@ select#detailsForm\:certDetails\:newRevocationReason ~ input {
 #requestInfoForm\:generateBcfks,
 #requestInfoForm\:generateJks,
 .executeActionButton {
-    background: rgb(205, 33, 34);
+    background: rgb(209, 10, 17);
     color: #fff;
 }
 
@@ -888,7 +888,7 @@ a {
 
 #contentForm\:showMoreButton,
 #contentForm\:showLessButton {
-    background: rgb(205, 33, 34);
+    background: rgb(209, 10, 17);
     color: #fff;
     margin: 3% 0 0 0;
 }
@@ -1671,7 +1671,7 @@ table#contentForm\:searchCertTable > tbody > tr > td > input:hover, #contentForm
 
     div#menu.ejbca-menu ul.pure-menu-list > li#menu-head-is-closed.web-express.tablet,
     div#menu.ejbca-menu ul.pure-menu-list > li#menu-head-is-open.web-express.tablet {
-        background: rgb(205, 33, 34);
+        background: rgb(209, 10, 17);
         display: block;
         height: 55px;
     }
@@ -1744,7 +1744,7 @@ table#contentForm\:searchCertTable > tbody > tr > td > input:hover, #contentForm
     }
 
     div#menu.ejbca-menu ul.pure-menu-list > li.pure-menu-has-children ul.pure-menu-children li.pure-menu-item > a {
-        background: rgb(205, 33, 34);
+        background: rgb(209, 10, 17);
     }
 
     div#menu.ejbca-menu ul.pure-menu-list > li.pure-menu-has-children ul.pure-menu-children li.pure-menu-item > a:hover {
@@ -2102,7 +2102,7 @@ table#contentForm\:searchCertTable > tbody > tr > td > input:hover, #contentForm
     }
 
     .pure-menu-link {
-        background: rgb(205, 33, 34);
+        background: rgb(209, 10, 17);
         color: #fff;
         font-size: 90%;
         height: 26px;
@@ -2117,7 +2117,7 @@ table#contentForm\:searchCertTable > tbody > tr > td > input:hover, #contentForm
     .cas-menu-link:hover, .cas-menu-link:focus,
     .enroll-menu-link:hover, .enroll-menu-link:focus,
     .pure-menu-link:hover, .pure-menu-link:focus {
-        background: rgb(205, 33, 34);
+        background: rgb(209, 10, 17);
     }
 
     ul.pure-menu-list {
