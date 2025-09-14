@@ -335,6 +335,8 @@
 										<h:outputLabel for="#{'subject_dn_email_required'}" value="#{msg.subject_dn_USESEMAILFIELDDATA}" rendered="#{enrollMakeNewRequestBean.isDnEmail(instance)}"/>
 										<h:inputText id="subjectDnField" value="#{enrollMakeNewRequestBean.subjectDn.requiredFieldInstances[loop.index].value}" styleClass="jsDelayKeyUp jsAutoFocusFirst #{component.valid?'':'jsAutoFocusError'}"
 											 rendered="#{instance.modifiable and !instance.selectable and !instance.dnEmail}">
+											<f:passThroughAttribute name="placeholder" 
+        										value="#{loop.index == 1 ? 'E1002867477' : loop.index == 2 ? 'Juan Jens Pérez Rivaldo' : ''}" />
 											<f:validator validatorId="extendedRegexValidator" />
 											<f:attribute name="pattern" value="#{instance.regexPatternRequired ? instance.regexPattern : ''}"/>
 											<f:validator validatorId="extendedRequiredValidator"/>
@@ -1016,6 +1018,7 @@
 								<h:inputText id="usernameField"
 									styleClass="#{enrollMakeNewRequestBean.endEntityProfile.username.instances.get(0).required ? 'required-input' : ''}"
 									value="#{enrollMakeNewRequestBean.endEntityInformation.inputUsernameValue}">
+									<f:passThroughAttribute name="placeholder" value="jjperezr" />
 									<f:ajax event="change" execute="@this"
 										listener="#{enrollMakeNewRequestBean.validateUsername}"
 										render=":requestInfoForm:userCredentialsMessage" />
@@ -1030,6 +1033,7 @@
 								rendered="#{enrollMakeNewRequestBean.passwordRendered}">
 								<h:outputLabel for="passwordField" value="#{msg.enroll_password} *" />
 								<h:inputSecret id="passwordField" value="#{enrollMakeNewRequestBean.endEntityInformation.password}" styleClass="#{component.valid?'':'jsAutoFocusError'}">
+									<f:passThroughAttribute name="placeholder" value="min. 16 caracteres" />
 									<f:validator validatorId="extendedRequiredValidator"/>
 									<f:attribute name="_required" value="true"/>
 									<f:passThroughAttribute name="autocomplete" value="new-password"/>
@@ -1040,6 +1044,7 @@
 							<h:panelGroup layout="block" styleClass="pure-control-group" rendered="#{enrollMakeNewRequestBean.passwordRendered}">
 								<h:outputLabel for="passwordConfirmField" value="#{msg.enroll_confirm_password} *" />
 								<h:inputSecret id="passwordConfirmField" binding="#{enrollMakeNewRequestBean.confirmPasswordComponent}" value="#{enrollMakeNewRequestBean.confirmPassword}" styleClass="#{component.valid?'':'jsAutoFocusError'}">
+									<f:passThroughAttribute name="placeholder" value="min. 16 caracteres" />
 									<f:validator validatorId="extendedRequiredValidator"/>
 									<f:attribute name="_required" value="true"/>
 									<f:passThroughAttribute name="autocomplete" value="new-password"/>
@@ -1056,6 +1061,7 @@
 								<h:outputLabel for="emailField" value="#{msg.enroll_email}#{enrollMakeNewRequestBean.emailRequired ? ' *' : ''}"/>
 								<h:inputText id="emailField" value="#{enrollMakeNewRequestBean.endEntityInformation.email}" styleClass="#{component.valid?'':'jsAutoFocusError'}" 
 									required="#{enrollMakeNewRequestBean.emailRequired}">
+									<f:passThroughAttribute name="placeholder" value="jjperezr@utn.edu.ec" />
 									<f:ajax event="change" render=":requestInfoForm:requestPreviewOuterPanel" listener="#{enrollMakeNewRequestBean.updateRfcAltName}"/>
 									<f:ajax event="keyup" render=":requestInfoForm:requestPreviewOuterPanel" listener="#{enrollMakeNewRequestBean.updateRfcAltName}"/>
 								</h:inputText>

@@ -157,7 +157,7 @@ img.menu_logo {
 }
 
 .internal-frame-black {
-    background: #000;
+    background: #c7c7c7;
     border-radius: 2px;
     margin: 1% 0 4% 0;
 }
@@ -305,7 +305,7 @@ span .approvalStep,
 #manageRequestForm\:editRequestDataTable span {
     word-break: break-all;
     margin-left: 1.5%;
-    color: #fff;
+    color: #000000;
     display: block;
     margin-bottom: 4%;
 }
@@ -821,7 +821,7 @@ select#detailsForm\:certDetails\:newRevocationReason ~ input {
 }
 
 .keygeneration-button-group {
-    color: #fff;
+    color: #000000;
     margin: 2% 0 0 0;
 }
 
@@ -830,7 +830,7 @@ select#detailsForm\:certDetails\:newRevocationReason ~ input {
 }
 
 a {
-    color: #e9322d;
+    color: rgb(209, 10, 17);
     text-decoration: none;
 }
 
